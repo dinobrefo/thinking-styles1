@@ -1,0 +1,14 @@
+{
+  "name": "thinking-styles-assessment",
+  "version": "1.0.0",
+  "description": "ThinkAlign - Cognitive Profile Assessment Platform",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build",
+    "start": "cd frontend && npm start",
+    "dev": "cd frontend && npm start"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
