@@ -1,15 +1,35 @@
 import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
-// Database connection - Using SQLite for easier setup
-const sequelize = new Sequelize(
-  process.env.DATABASE_URL || 'sqlite://./thinking_styles.db',
-  {
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
-    dialect: 'sqlite',
-    storage: './thinking_styles.db'
-  }
-);
+// Database connection - Using PostgreSQL
+const sequelize = process.env.DATABASE_URL
+  ? new Sequelize(process.env.DATABASE_URL, {
+      dialect: 'postgres',
+      logging: process.env.NODE_ENV === 'development' ? console.log : false,
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
+    })
+  : new Sequelize(
+      process.env.DB_NAME || 'thinking_styles',
+      process.env.DB_USER || 'postgres',
+      process.env.DB_PASSWORD || 'postgres',
+      {
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432'),
+        dialect: 'postgres',
+        logging: process.env.NODE_ENV === 'development' ? console.log : false,
+        pool: {
+          max: 5,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        }
+      }
+    );
 
 // User Types
 export enum UserRole {
@@ -476,14 +496,42 @@ Reflection.belongsTo(Report, { foreignKey: 'reportId', as: 'report' });
 // Database connection function
 export const connectDatabase = async (): Promise<void> => {
   try {
-    await sequelize.authenticate();
-    console.log('Connected to PostgreSQL database');
+    console.log('🔍 Attempting to connect with:');
+    console.log('  DB_HOST:', process.env.DB_HOST || 'localhost');
+    console.log('  DB_PORT:', process.env.DB_PORT || '5432');
+    console.log('  DB_NAME:', process.env.DB_NAME || 'thinking_styles');
+    console.log('  DB_USER:', process.env.DB_USER || 'postgres');
+    console.log('  DATABASE_URL:', process.env.DATABASE_URL || 'not set');
+    
+    // Add retry logic for initial connection
+    let retries = 3;
+    let lastError;
+    
+    while (retries > 0) {
+      try {
+        await sequelize.authenticate();
+        console.log('✅ Connected to PostgreSQL database');
+        break;
+      } catch (error) {
+        lastError = error;
+        retries--;
+        if (retries > 0) {
+          console.log(`⚠️ Connection failed, retrying... (${retries} attempts left)`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+    }
+    
+    if (retries === 0) {
+      throw lastError;
+    }
     
     // Sync models (create tables if they don't exist)
-    await sequelize.sync({ force: true });
-    console.log('Database models synchronized');
+    // Changed from force: true to alter: true to preserve data
+    await sequelize.sync({ alter: true });
+    console.log('✅ Database models synchronized');
   } catch (error) {
-    console.error('Database connection error:', error);
+    console.error('❌ Database connection error:', error);
     throw error;
   }
 };

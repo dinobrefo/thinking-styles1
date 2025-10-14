@@ -14,6 +14,15 @@ import userRoutes from './routes/users';
 // Load environment variables
 dotenv.config();
 
+// Debug: Log environment variables
+console.log('🔧 Environment variables loaded:');
+console.log('  PORT:', process.env.PORT);
+console.log('  NODE_ENV:', process.env.NODE_ENV);
+console.log('  DB_NAME:', process.env.DB_NAME);
+console.log('  DB_USER:', process.env.DB_USER);
+console.log('  DB_HOST:', process.env.DB_HOST);
+console.log('  DB_PORT:', process.env.DB_PORT);
+
 const app = express();
 const PORT = process.env.PORT || 5001; // Changed port to avoid conflict
 
@@ -26,16 +35,6 @@ app.use(cors({
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
-
-// Database connection
-connectDatabase()
-  .then(() => {
-    console.log('Database connected successfully');
-  })
-  .catch((error) => {
-    console.error('Database connection error:', error);
-    process.exit(1);
-  });
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -66,10 +65,20 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Database connection and server startup
+connectDatabase()
+  .then(() => {
+    console.log('Database connected successfully');
+    
+    // Start server ONLY after database is connected
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Database connection error:', error);
+    process.exit(1);
+  });
 
 export default app;

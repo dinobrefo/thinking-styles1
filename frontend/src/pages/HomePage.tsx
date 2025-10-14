@@ -7,7 +7,6 @@ import Footer from '../components/Footer';
 const HomePage: React.FC = () => {
   const { user } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('register');
 
   return (
     <div className="home-page">
@@ -32,24 +31,12 @@ const HomePage: React.FC = () => {
                 </Link>
               ) : (
                 <>
-                  <button 
-                    className="btn-primary"
-                    onClick={() => {
-                      setAuthMode('register');
-                      setShowAuthModal(true);
-                    }}
-                  >
-                    Start Assessment
-                  </button>
-                  <button 
-                    className="btn-secondary"
-                    onClick={() => {
-                      setAuthMode('login');
-                      setShowAuthModal(true);
-                    }}
-                  >
+                  <Link to="/register" className="btn-primary" style={{ textDecoration: 'none' }}>
+                    Get Started
+                  </Link>
+                  <Link to="/login" className="btn-secondary" style={{ textDecoration: 'none' }}>
                     Sign In
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -130,15 +117,9 @@ const HomePage: React.FC = () => {
                   Go to Dashboard
                 </Link>
               ) : (
-                <button 
-                  className="btn-primary"
-                  onClick={() => {
-                    setAuthMode('register');
-                    setShowAuthModal(true);
-                  }}
-                >
-                  Start Your Assessment
-                </button>
+                <Link to="/register" className="btn-primary" style={{ textDecoration: 'none' }}>
+                  Start Your Journey
+                </Link>
               )}
             </div>
           </div>
@@ -150,7 +131,7 @@ const HomePage: React.FC = () => {
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        initialMode={authMode}
+        initialMode="login"
       />
 
       {/* Footer */}
