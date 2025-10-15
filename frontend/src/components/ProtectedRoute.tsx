@@ -8,12 +8,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
-  const { user, loading, token } = useAuth();
-
-  console.log('ProtectedRoute: loading=', loading, 'user=', user, 'token=', token);
+  const { user, loading } = useAuth();
 
   if (loading) {
-    console.log('ProtectedRoute: Still loading...');
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
@@ -23,11 +20,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
   }
 
   if (!user) {
-    console.log('ProtectedRoute: No user, redirecting to login');
     return <Navigate to="/login" replace />;
   }
-
-  console.log('ProtectedRoute: User authenticated, rendering children');
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return (

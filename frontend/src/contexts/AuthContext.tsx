@@ -71,23 +71,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
-      console.log('AuthContext: Checking auth on app start, token:', token);
       if (token) {
         try {
-          console.log('AuthContext: Token found, fetching user profile...');
           const response = await axios.get('/auth/profile');
-          console.log('AuthContext: Profile fetched:', response.data.user);
           setUser(response.data.user);
         } catch (error) {
-          console.error('AuthContext: Auth check failed:', error);
+          console.error('Auth check failed:', error);
           localStorage.removeItem('token');
           setToken(null);
         }
-      } else {
-        console.log('AuthContext: No token found');
       }
       setLoading(false);
-      console.log('AuthContext: Auth check complete');
     };
 
     checkAuth();
@@ -95,12 +89,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('AuthContext: Starting login request...');
       const response = await axios.post('/auth/login', { email, password });
-      console.log('AuthContext: Login response:', response.data);
       const { user: userData, token: newToken } = response.data;
       
-      console.log('AuthContext: Setting token and user...');
       // Set token first
       localStorage.setItem('token', newToken);
       setToken(newToken);
@@ -108,11 +99,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Then set user
       setUser(userData);
       
-      console.log('AuthContext: Login complete. User:', userData);
       // Return success to indicate login completed
       return Promise.resolve();
     } catch (error: any) {
-      console.error('AuthContext: Login error:', error);
       throw new Error(error.response?.data?.message || 'Login failed');
     }
   };
