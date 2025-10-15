@@ -27,10 +27,17 @@ const LoginPage: React.FC = () => {
     setLoading(true);
     setError('');
 
+    console.log('Login attempt started...');
+    console.log('API URL:', process.env.REACT_APP_API_URL);
+
     try {
+      console.log('Calling login function...');
       await login(formData.email, formData.password);
+      console.log('Login successful! Navigating to dashboard...');
+      
       // Small delay to ensure state is updated
       setTimeout(() => {
+        console.log('Navigating now...');
         navigate('/dashboard', { replace: true });
       }, 100);
     } catch (err: any) {
