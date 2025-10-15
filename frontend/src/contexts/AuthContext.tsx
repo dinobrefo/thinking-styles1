@@ -92,9 +92,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await axios.post('/auth/login', { email, password });
       const { user: userData, token: newToken } = response.data;
       
-      setUser(userData);
-      setToken(newToken);
+      // Set token first
       localStorage.setItem('token', newToken);
+      setToken(newToken);
+      
+      // Then set user
+      setUser(userData);
+      
+      // Return success to indicate login completed
+      return Promise.resolve();
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Login failed');
     }
@@ -105,9 +111,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await axios.post('/auth/register', userData);
       const { user: newUser, token: newToken } = response.data;
       
-      setUser(newUser);
-      setToken(newToken);
+      // Set token first
       localStorage.setItem('token', newToken);
+      setToken(newToken);
+      
+      // Then set user
+      setUser(newUser);
+      
+      // Return success to indicate registration completed
+      return Promise.resolve();
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Registration failed');
     }

@@ -129,15 +129,13 @@ const RegisterPage: React.FC = () => {
         parentEmail: formData.parentEmail || undefined
       };
 
-      console.log('Attempting registration with:', { ...userData, password: '***' });
       await register(userData);
-      console.log('Registration successful!');
-      navigate('/dashboard');
+      // Use window.location for guaranteed redirect
+      window.location.href = '/dashboard';
     } catch (err: any) {
       console.error('Registration error details:', err);
       const errorMessage = err.response?.data?.message || err.message || 'Registration failed. Please try again.';
       setError(errorMessage);
-    } finally {
       setLoading(false);
     }
   };
