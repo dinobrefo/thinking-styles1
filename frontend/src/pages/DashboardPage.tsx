@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import AssessmentCharts from '../components/AssessmentCharts';
 
 interface Assessment {
-  _id: string;
+  id: number;
   type: string;
   scores: { [key: string]: number };
   completedAt: string;

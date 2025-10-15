@@ -17,7 +17,7 @@ interface UserStats {
 }
 
 interface User {
-  _id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -63,7 +63,7 @@ const AdminPage: React.FC = () => {
   const toggleUserStatus = async (userId: string, isActive: boolean) => {
     try {
       await axios.put(`/users/${userId}/status`, { isActive });
-      setUsers(users.map(u => u._id === userId ? { ...u, isActive } : u));
+      setUsers(users.map(u => u.id === userId ? { ...u, isActive } : u));
     } catch (error) {
       console.error('Error updating user status:', error);
       alert('Failed to update user status');
@@ -162,7 +162,7 @@ const AdminPage: React.FC = () => {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user._id}>
+                  <tr key={user.id}>
                     <td>{user.firstName} {user.lastName}</td>
                     <td>{user.email}</td>
                     <td>
@@ -181,7 +181,7 @@ const AdminPage: React.FC = () => {
                     <td>
                       <button
                         className={`btn btn-small ${user.isActive ? 'btn-secondary' : 'btn-primary'}`}
-                        onClick={() => toggleUserStatus(user._id, !user.isActive)}
+                        onClick={() => toggleUserStatus(user.id, !user.isActive)}
                       >
                         {user.isActive ? 'Deactivate' : 'Activate'}
                       </button>
