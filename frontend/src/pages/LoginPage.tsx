@@ -27,12 +27,17 @@ const LoginPage: React.FC = () => {
     setLoading(true);
     setError('');
 
+    console.log('LoginPage: Form submitted');
+
     try {
+      console.log('LoginPage: Calling login...');
       await login(formData.email, formData.password);
+      console.log('LoginPage: Login successful, redirecting...');
+      
       // Use window.location for guaranteed redirect
       window.location.href = '/dashboard';
     } catch (err: any) {
-      console.error('Login error:', err);
+      console.error('LoginPage: Login error:', err);
       setError(err.message || 'Login failed. Please check your credentials.');
       setLoading(false);
     }
