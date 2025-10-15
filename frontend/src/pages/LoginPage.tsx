@@ -29,9 +29,13 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(formData.email, formData.password);
-      navigate('/dashboard');
+      // Small delay to ensure state is updated
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 100);
     } catch (err: any) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
