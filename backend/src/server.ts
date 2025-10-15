@@ -23,7 +23,8 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:3002',
     'http://localhost:3000',
-    'https://postsurgical-untransposed-carrie.ngrok-free.dev'
+    'https://thinking-styles1.vercel.app',
+    /\.vercel\.app$/  // Allow all Vercel preview deployments
   ],
   credentials: true
 }));
