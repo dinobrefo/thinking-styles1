@@ -60,7 +60,7 @@ const AdminPage: React.FC = () => {
     fetchAdminData();
   }, [currentPage, fetchAdminData]);
 
-  const toggleUserStatus = async (userId: string, isActive: boolean) => {
+  const toggleUserStatus = async (userId: number, isActive: boolean) => {
     try {
       await axios.put(`/users/${userId}/status`, { isActive });
       setUsers(users.map(u => u.id === userId ? { ...u, isActive } : u));
