@@ -496,13 +496,6 @@ Reflection.belongsTo(Report, { foreignKey: 'reportId', as: 'report' });
 // Database connection function
 export const connectDatabase = async (): Promise<void> => {
   try {
-    console.log('🔍 Attempting to connect with:');
-    console.log('  DB_HOST:', process.env.DB_HOST || 'localhost');
-    console.log('  DB_PORT:', process.env.DB_PORT || '5432');
-    console.log('  DB_NAME:', process.env.DB_NAME || 'thinking_styles');
-    console.log('  DB_USER:', process.env.DB_USER || 'postgres');
-    console.log('  DATABASE_URL:', process.env.DATABASE_URL || 'not set');
-    
     // Add retry logic for initial connection
     let retries = 3;
     let lastError;
