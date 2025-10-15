@@ -13,7 +13,7 @@ interface Assessment {
 }
 
 interface Report {
-  _id: string;
+  id: number;
   overallProfile: {
     primaryStyle: string;
     secondaryStyle: string;
@@ -211,7 +211,7 @@ const DashboardPage: React.FC = () => {
             <h2 className="reports-title">Your Reports</h2>
             <div className="reports-grid">
               {reports.map((report) => (
-                <div key={report._id} className="report-card">
+                <div key={report.id} className="report-card">
                   <div className="report-card-title">Thinking Style Profile</div>
                   <div className="report-card-meta">
                     <span>{formatDate(report.generatedAt)}</span>
@@ -250,7 +250,7 @@ const DashboardPage: React.FC = () => {
                     )}
                   </div>
 
-                  <Link to={`/report/${report._id}`} className="btn btn-primary btn-full">
+                  <Link to={`/report/${report.id}`} className="btn btn-primary btn-full">
                     View Full Report
                   </Link>
                 </div>

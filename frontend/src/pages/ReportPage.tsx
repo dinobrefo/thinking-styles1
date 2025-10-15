@@ -5,7 +5,7 @@ import { generateReportPDF, ReportData } from '../utils/pdfGenerator';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Report {
-  _id: string;
+  id: number;
   overallProfile: {
     primaryStyle: string;
     secondaryStyle: string;
