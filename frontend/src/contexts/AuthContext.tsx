@@ -71,17 +71,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
+      console.log('AuthContext: Checking auth on app start, token:', token);
       if (token) {
         try {
+          console.log('AuthContext: Token found, fetching user profile...');
           const response = await axios.get('/auth/profile');
+          console.log('AuthContext: Profile fetched:', response.data.user);
           setUser(response.data.user);
         } catch (error) {
-          console.error('Auth check failed:', error);
+          console.error('AuthContext: Auth check failed:', error);
           localStorage.removeItem('token');
           setToken(null);
         }
+      } else {
+        console.log('AuthContext: No token found');
       }
       setLoading(false);
+      console.log('AuthContext: Auth check complete');
     };
 
     checkAuth();

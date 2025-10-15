@@ -362,6 +362,7 @@ const RegisterPage: React.FC = () => {
                   required
                   placeholder="Create a strong password"
                   className={fieldErrors.password ? 'error' : ''}
+                  autoComplete="new-password"
                 />
                 <button
                   type="button"
@@ -406,6 +407,7 @@ const RegisterPage: React.FC = () => {
                   required
                   placeholder="Re-enter your password"
                   className={fieldErrors.confirmPassword ? 'error' : ''}
+                  autoComplete="new-password"
                 />
                 <button
                   type="button"
