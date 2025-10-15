@@ -29,7 +29,11 @@ const PORT = process.env.PORT || 5001; // Changed port to avoid conflict
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3002',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:3002',
+    'http://localhost:3000',
+    'https://postsurgical-untransposed-carrie.ngrok-free.dev'
+  ],
   credentials: true
 }));
 app.use(morgan('combined'));
